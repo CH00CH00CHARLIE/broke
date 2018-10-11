@@ -9,9 +9,9 @@ var moment = require('moment');
 var plaid = require('plaid');
 
 var APP_PORT = envvar.number('APP_PORT', 8000);
-var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID');
-var PLAID_SECRET = envvar.string('PLAID_SECRET');
-var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY');
+var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID', '5bb63c2cf17fb3001118dd22');
+var PLAID_SECRET = envvar.string('PLAID_SECRET', '25988c12c60164e32d73351e562718');
+var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY', 'ac25fbf77a17846194a680a183096a');
 var PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
 
 // We store the access_token in memory - in production, store it in a secure
