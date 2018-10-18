@@ -201,10 +201,21 @@ app.post('/set_access_token', function(request, response, next) {
 });
 
 
+
 //Testing with JSON
 const fs = require('fs');
-let data = fs.readFileSync('package.json');
-let interpret = JSON.parse(data);
-console.log(interpret);
+fs.readFile('package.json' , (err,data) => {
+  if (err) {
+    throw err;
+  }
+  let d = JSON.parse(data);
+
+  let da = JSON.stringify(d, null, 2);
+
+  fs.writeFile('student-3.json', da, (err) => {  
+    if (err) throw err;
+    console.log('Data written to file');
+});
+});
 
 
