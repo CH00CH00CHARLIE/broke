@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "AwesomeProject",
+    "name": "react-native-plaid",
     "description": "This project is really great.",
-    "slug": "AwesomeProject",
+    "slug": "react-native-plaid",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
