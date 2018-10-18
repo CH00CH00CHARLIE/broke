@@ -146,7 +146,7 @@ app.get('/auth', function(request, response, next) {
         error: error,
       });
     }
-    prettyPrintResponse(authResponse);
+    prettyPrintResponse(authResponse.accounts[0].account_id);
     response.json({error: null, auth: authResponse});
   });
 });
@@ -199,3 +199,12 @@ app.post('/set_access_token', function(request, response, next) {
     });
   });
 });
+
+
+//Testing with JSON
+const fs = require('fs');
+let data = fs.readFileSync('package.json');
+let interpret = JSON.parse(data);
+console.log(interpret);
+
+
