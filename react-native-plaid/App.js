@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PlaidAuthenticator from 'react-native-plaid-link';
+var PUBLIC_TOKEN = null;
 export default class App extends React.Component {
   render() {
     return <PlaidAuthenticator
@@ -13,6 +14,10 @@ export default class App extends React.Component {
   }
   onMessage = (data) => {
     this.setState({data})
+    if (data.metadata.public_token != 'undefined') {
+      PUBLIC_TOKEN = data.metadata.public_token
+      console.log(PUBLIC_TOKEN)
+    }
   }
 }
 const styles = StyleSheet.create({
@@ -20,6 +25,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+
     justifyContent: 'center',
   },
 });
