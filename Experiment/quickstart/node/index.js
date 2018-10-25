@@ -146,7 +146,7 @@ app.get('/auth', function(request, response, next) {
         error: error,
       });
     }
-    prettyPrintResponse(authResponse.accounts[0].account_id);
+    prettyPrintResponse(authResponse);
     response.json({error: null, auth: authResponse});
   });
 });
@@ -203,6 +203,7 @@ app.post('/set_access_token', function(request, response, next) {
 
 
 //Testing with JSON
+/*
 const fs = require('fs');
 fs.readFile('package.json' , (err,data) => {
   if (err) {
@@ -217,5 +218,5 @@ fs.readFile('package.json' , (err,data) => {
     console.log('Data written to file');
 });
 });
-
+*/
 
