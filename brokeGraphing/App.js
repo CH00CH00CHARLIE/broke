@@ -3,6 +3,24 @@ import { AppRegistry, View } from 'react-native';
 
 import { AreaChart, Grid } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
+
+import { ProgressCircle }  from 'react-native-svg-charts'
+ 
+class ProgressCircleExample extends React.PureComponent {
+ 
+    render() {
+ 
+        return (
+            <ProgressCircle
+                style={ { height: 200 } }
+                progress={ 0.7 }
+                progressColor={'rgb(134, 65, 244)'}
+            />
+        )
+    }
+ 
+}
+ 
  
 class AreaChartExample extends React.PureComponent {
  
@@ -38,6 +56,8 @@ export default class AlignItemsBasics extends Component {
       }}>
         <AreaChartExample/>
         <View style={{height: 50, backgroundColor: 'skyblue'}} />
+
+        <ProgressCircleExample/>
         <View style={{height: 100, backgroundColor: 'steelblue'}} />
       </View>
     );
