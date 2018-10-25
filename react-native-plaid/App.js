@@ -3,6 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import PlaidAuthenticator from 'react-native-plaid-link';
 var PUBLIC_TOKEN = null;
 export default class App extends React.Component {
+  writeToFile(token) {
+    var writeJsonFile = require('write-json-file')
+    writeJsonFile('token.json', {token: true})
+  }
   render() {
     return <PlaidAuthenticator
       onMessage={this.onMessage}
@@ -14,12 +18,14 @@ export default class App extends React.Component {
   }
   onMessage = (data) => {
     this.setState({data})
-    if (data.metadata.public_token != 'undefined') {
+    if (typeof(data.metadata.public_token) != 'undefined') {
       PUBLIC_TOKEN = data.metadata.public_token
       console.log(PUBLIC_TOKEN)
+      //writeToFile(PUBLIC_TOKEN)
     }
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,0 +1,95 @@
+__d(function (global, _require, module, exports, _dependencyMap) {
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var path = _require(_dependencyMap[0], "path");
+
+	var fs = _require(_dependencyMap[1], "graceful-fs");
+
+	var writeFileAtomic = _require(_dependencyMap[2], "write-file-atomic");
+
+	var sortKeys = _require(_dependencyMap[3], "sort-keys");
+
+	var makeDir = _require(_dependencyMap[4], "make-dir");
+
+	var pify = _require(_dependencyMap[5], "pify");
+
+	var detectIndent = _require(_dependencyMap[6], "detect-indent");
+
+	var init = function init(fn, filePath, data, options) {
+		if (!filePath) {
+			throw new TypeError('Expected a filepath');
+		}
+
+		if (data === undefined) {
+			throw new TypeError('Expected data to stringify');
+		}
+
+		options = _extends({
+			indent: '\t',
+			sortKeys: false
+		}, options);
+
+		if (options.sortKeys) {
+			data = sortKeys(data, {
+				deep: true,
+				compare: typeof options.sortKeys === 'function' ? options.sortKeys : undefined
+			});
+		}
+
+		return fn(filePath, data, options);
+	};
+
+	var readFile = function readFile(filePath) {
+		return pify(fs.readFile)(filePath, 'utf8').catch(function () {});
+	};
+
+	var main = function main(filePath, data, options) {
+		return (options.detectIndent ? readFile(filePath) : Promise.resolve()).then(function (string) {
+			var indent = string ? detectIndent(string).indent : options.indent;
+			var json = JSON.stringify(data, options.replacer, indent);
+			return pify(writeFileAtomic)(filePath, json + "\n", {
+				mode: options.mode
+			});
+		});
+	};
+
+	var mainSync = function mainSync(filePath, data, options) {
+		var indent = options.indent;
+
+		if (options.detectIndent) {
+			try {
+				var file = fs.readFileSync(filePath, 'utf8');
+				indent = detectIndent(file).indent;
+			} catch (error) {
+				if (error.code !== 'ENOENT') {
+					throw error;
+				}
+			}
+		}
+
+		var json = JSON.stringify(data, options.replacer, indent);
+		return writeFileAtomic.sync(filePath, json + "\n", {
+			mode: options.mode
+		});
+	};
+
+	var writeJsonFile = function writeJsonFile(filePath, data, options) {
+		return makeDir(path.dirname(filePath), {
+			fs: fs
+		}).then(function () {
+			return init(main, filePath, data, options);
+		});
+	};
+
+	module.exports = writeJsonFile;
+	module.exports.default = writeJsonFile;
+
+	module.exports.sync = function (filePath, data, options) {
+		makeDir.sync(path.dirname(filePath), {
+			fs: fs
+		});
+		init(mainSync, filePath, data, options);
+	};
+});
