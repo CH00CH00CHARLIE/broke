@@ -14,9 +14,8 @@ export default class App extends React.Component {
   }
   onMessage = (data) => {
     this.setState({data})
-    if (typeof(data.metadata.public_token) != 'undefined') {
-      PUBLIC_TOKEN = data.metadata.public_token
-      console.log(PUBLIC_TOKEN)     
+    if (data.action == "plaid_link-undefined::connected") {
+      console.log(data.metadata.public_token)
     }
   }
 }
